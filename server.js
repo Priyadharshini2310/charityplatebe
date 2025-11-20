@@ -4,9 +4,13 @@ const connectDB = require('./config/db');
 const cors = require('cors'); 
 
 // Load env vars from config.env
-// dotenv.config({ path: './config/config.env' });
-dotenv.config();
+dotenv.config({ path: './config/config.env' });
+// dotenv.config();
 
+// DEBUG: Check if env vars are loaded
+console.log('MONGODB_URI:', process.env.MONGODB_URI ? '✅ Loaded' : '❌ Not Loaded');
+console.log('PORT:', process.env.PORT);
+console.log('NODE_ENV:', process.env.NODE_ENV);
 
 // Connect to database
 connectDB();
