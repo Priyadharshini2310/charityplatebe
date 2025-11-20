@@ -15,6 +15,9 @@ router.post('/signup', authController.signup);
 router.post('/verify-otp', authController.verifyOTP);
 router.post('/resend-otp', authController.resendOTP);
 router.post('/login', authController.login);
+// NEW: forgot/reset endpoints (add these)
+router.post('/forgot-password', authController.forgotPassword);
+router.post('/reset-password', authController.resetPassword);
 
 // Protected route
 router.get('/me', protect, authController.getCurrentUser);
