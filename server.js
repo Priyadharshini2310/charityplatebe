@@ -22,6 +22,7 @@ const charityRoutes = require('./routes/charityRoutes');
 const cartRoutes = require('./routes/cartRoutes');
 const donationRoutes = require('./routes/donationRoutes');
 const messageRoutes = require('./routes/messageRoutes');
+const subscribeRouter = require('./routes/subscribe');
 const app = express();
 
 // Body parser middleware
@@ -37,6 +38,7 @@ app.use('/api/charity', charityRoutes);
 app.use('/api/cart', cartRoutes);
 app.use('/api/donations', donationRoutes);
 app.use('/api/messages', messageRoutes)
+app.use('/api', subscribeRouter);
 const PORT = process.env.PORT || 5100;
 
 const server = app.listen(
