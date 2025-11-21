@@ -747,8 +747,8 @@ exports.forgotPassword = async (req, res) => {
     user.resetPasswordExpiry = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
     await user.save();
 
-    const frontend = process.env.FRONTEND_URL || 'http://localhost:3000';
-    const resetUrl = `${frontend}/reset-password?token=${resetToken}&email=${encodeURIComponent(user.email)}`;
+    const frontend = process.env.FRONTEND_URL || 'https://charityplatebe.vercel.app';
+    const resetUrl = `/reset-password?token=${resetToken}&email=${encodeURIComponent(user.email)}`;
 
     await sendResetEmail(user.email, user.name, resetUrl);
 

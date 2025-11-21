@@ -70,14 +70,65 @@ router.get('/profile', protect, authorize('charity'), async (req, res) => {
 // @route   PUT /api/charity/profile
 // @desc    Update charity profile
 // @access  Private (Charity only)
-router.put('/profile', async (req, res) => {
-  try {
-    // Since there's no auth, you need to get userId from request body or params
-    const userId = req.body.userId; // or req.query.userId or req.params.userId
+// router.put('/profile', async (req, res) => {
+//   try {
+//     // Since there's no auth, you need to get userId from request body or params
+//     const userId = req.body.userId; // or req.query.userId or req.params.userId
     
-    if (!userId) {
-      return res.status(400).json({ message: 'User ID is required' });
-    }
+//     if (!userId) {
+//       return res.status(400).json({ message: 'User ID is required' });
+//     }
+    
+//     console.log('📝 Updating charity profile for user:', userId);
+    
+//     const { name, address, pricePerPlate, type, isActive, description, distance, contactEmail, contactPhone, image, rating, reviews } = req.body;
+
+//     let charity = await Charity.findOne({ userId: userId });
+
+//     const updateData = {
+//       name: name || charity?.name || 'Organization',
+//       address: address || charity?.address || 'Please update your address',
+//       pricePerPlate: pricePerPlate !== undefined ? pricePerPlate : (charity?.pricePerPlate || 50),
+//       type: type || charity?.type || 'both',
+//       isActive: isActive !== undefined ? isActive : (charity?.isActive !== undefined ? charity.isActive : true),
+//       description: description || charity?.description,
+//       contactEmail: contactEmail || charity?.contactEmail,
+//       contactPhone: contactPhone || charity?.contactPhone,
+//       distance: distance !== undefined ? distance : (charity?.distance || 10),
+//       image: image || charity?.image || '',
+//       rating: rating !== undefined ? rating : (charity?.rating || 0),
+//       reviews: reviews !== undefined ? reviews : (charity?.reviews || '')
+//     };
+
+//     if (!charity) {
+//       console.log('📝 Creating new charity profile');
+//       charity = await Charity.create({
+//         userId: userId,
+//         ...updateData
+//       });
+//     } else {
+//       console.log('📝 Updating existing charity profile');
+//       Object.keys(updateData).forEach(key => {
+//         if (updateData[key] !== undefined) {
+//           charity[key] = updateData[key];
+//         }
+//       });
+//       await charity.save();
+//     }
+
+//     console.log('✅ Charity profile updated successfully');
+//     res.json(charity);
+//   } catch (error) {
+//     console.error('❌ Error updating charity profile:', error);
+//     res.status(500).json({ message: 'Server error', error: error.message });
+//   }
+// });
+// @route   PUT /api/charity/profile
+// @desc    Update charity profile
+// @access  Private (Charity only)
+router.put('/profile', protect, authorize('charity'), async (req, res) => {
+  try {
+    const userId = req.user.id; // Get from authenticated user
     
     console.log('📝 Updating charity profile for user:', userId);
     
