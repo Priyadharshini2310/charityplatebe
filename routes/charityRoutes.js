@@ -123,6 +123,42 @@ router.get('/profile', protect, authorize('charity'), async (req, res) => {
 //     res.status(500).json({ message: 'Server error', error: error.message });
 //   }
 // });
+// @route   POST /api/charity/profile
+// @desc    Create charity profile
+// @access  Private (Charity only)
+router.post('/profile', protect, authorize('charity'), async (req, res) => {
+  try {
+    const userId = req.user.id;
+    
+    console.log('📝 Creating charity profile for user:', userId);
+    
+    // Check if profile already exists
+    let charity = await Charity.findOne({ userId: userId });
+    
+    if (charity) {
+      return res.status(400).json({ message: 'Charity profile already exists. Use PUT to update.' });
+    }
+    
+    const { name, address, pricePerPlate, type, distance, contactPhone } = req.body;
+
+    charity = await Charity.create({
+      userId: userId,
+      name: name || 'Organization',
+      address: address || '',
+      pricePerPlate: pricePerPlate || 50,
+      type: type || 'both',
+      distance: distance || 10,
+      contactPhone: contactPhone || '',
+      isActive: true
+    });
+
+    console.log('✅ Charity profile created successfully');
+    res.json(charity);
+  } catch (error) {
+    console.error('❌ Error creating charity profile:', error);
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+});
 // @route   PUT /api/charity/profile
 // @desc    Update charity profile
 // @access  Private (Charity only)
